@@ -6,7 +6,7 @@ version = '1.0'
 setup(name='pymassmailer',
       version=version,
       description="Mass Mailer using mallow mailer and jinja2 templates",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.md").read() + "\n" +
                        open(os.path.join("docs", "TODO.txt")).read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
