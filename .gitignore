@@ -1,6 +1,8 @@
+<<<<<<< HEAD
 # Created by http://gitignore.io
 
 ### Python ###
+=======
 *.py[cod]
 
 # C extensions
@@ -58,3 +60,4 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
