@@ -58,7 +58,7 @@ I have a sample below that loads an excel file with pandas and mass mails the em
 Example script:
 
 ```python
-import PyMassMailer as pmm
+import PyMassMailer
 import os
 import pandas as pd
 
@@ -79,8 +79,40 @@ for count,row in data.iterrows():
 	print row
 	TO_ADDR = row['Email']
 	print 'sending email to: %s' % TO_ADDR
- 	email_sender.send_email(TO_ADDR, TEMPLATE_NAME, SUBJECT , data=row['Name'])
+ 	email_sender.send_email(TO_ADDR, TEMPLATE_NAME, SUBJECT , name=row['Name'])
 ```
 
 and in templates dir
 
+layout.html
+```html
+<html>
+<head>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>
+```
+
+
+message.html
+```html
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <p>Hello, {{ name }}!</p>
+    <br>
+
+{% endblock %}
+
+```
+
+message.txt
+'''
+ Hello, {{ name}}
+'''
