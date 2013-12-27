@@ -1,0 +1,7 @@
+include README.txt
+include pymassmailer/__init__.py
+recursive-include pymassmailer *
+recursive-include docs *
+global-include *txt
+global-include *csv
+global-exclude *pyc
