@@ -81,3 +81,6 @@ for count,row in data.iterrows():
 	print 'sending email to: %s' % TO_ADDR
  	email_sender.send_email(TO_ADDR, TEMPLATE_NAME, SUBJECT , data=row['Name'])
 ```
+
+and in templates dir
+
