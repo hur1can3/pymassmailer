@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from jinja2 import Environment, PackageLoader, TemplateNotFound
 from marrow.mailer import Mailer, Message
+from marrow.mailer.exc import MailConfigurationException
 from smtplib import SMTPException, SMTPAuthenticationError
 from date import datetime
 import os
@@ -159,7 +160,7 @@ class PyMassMailer(object):
         if code != self._config.SMTP_AUTH_OKAY:
             raise SMTPAuthenticationError(code, response)
 
-    def send_email(self, send_to, template, subject, files=[], **kwargs):
+    def send_email(self, send_to, template, subject, content, files=[], **kwargs):
         """
             Sends an email to the target email with two types
                 1) HTML
@@ -184,19 +185,27 @@ class PyMassMailer(object):
                 #part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
                 message.attach(filename, data=f)
 
-        try:
-            rendered_template = self._jinja_env.get_template(template + '.txt')
-            message.plain = rendered_template.render(**kwargs)
-            self._log.debug('Plain text email is %s', message.plain)
-        except TemplateNotFound:
-            self._log.debug('txt template not found')
+        if template:
+            try:
+                rendered_template = self._jinja_env.get_template(
+                    template + '.txt')
+                message.plain = rendered_template.render(**kwargs)
+                self._log.debug('Plain text email is %s', message.plain)
+            except TemplateNotFound:
+                self._log.debug('txt template not found')
 
-        try:
-            rendered_template = self._jinja_env.get_template(
-                template + '.html')
-            message.rich = rendered_template.render(**kwargs)
-            self._log.debug('html email generated %s' % message.rich)
-        except TemplateNotFound:
-            self._log.debug('html template not found')
+            try:
+                rendered_template = self._jinja_env.get_template(
+                    template + '.html')
+                message.rich = rendered_template.render(**kwargs)
+                self._log.debug('html email generated %s' % message.rich)
+            except TemplateNotFound:
+                self._log.debug('html template not found')
+        else:
+            if content:
+                message.plain = content
+            else:
+                raise MailConfigurationException(
+                    'No Message content or template defined')
 
         self._mailer.send(message)
